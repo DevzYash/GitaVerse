@@ -2,38 +2,50 @@ package com.yash.gitaverse.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yash.gitaverse.databinding.ItemChapterBinding
 import com.yash.gitaverse.model.Chapter
 
-class ChapterAdapter(private val chapters: List<Chapter>) :
-    RecyclerView.Adapter<ChapterAdapter.MyViewHolder>() {
+class ChapterAdapter(
+    private val onItemClicked: (Chapter) -> Unit
+) : ListAdapter<Chapter, ChapterAdapter.MyViewHolder>(DiffUtils()) {
 
-    class MyViewHolder(private val binding: ItemChapterBinding) :
+    inner class MyViewHolder(private val binding: ItemChapterBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(chapter: Chapter) {
-            binding.chapterNumber.text = chapter.id.toString()
-            binding.chapterName.text = chapter.name
-            binding.chapterSummary.text = chapter.chapter_summary
+            binding.chapterText.text =
+                "Chapter ${chapter.chapter_number} ${chapter.name_transliterated}"
+            binding.totalVerses.text = "${chapter.verses_count} Verses"
+            binding.chapterNumber.text = chapter.chapter_number.toString()
+            binding.chapterCard.setOnClickListener {
+                onItemClicked(chapter)
+            }
         }
+    }
+
+    class DiffUtils : DiffUtil.ItemCallback<Chapter>() {
+        override fun areItemsTheSame(oldItem: Chapter, newItem: Chapter): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Chapter, newItem: Chapter): Boolean {
+            return oldItem == newItem
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
             ItemChapterBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
+                LayoutInflater.from(parent.context), parent, false
             )
         )
     }
 
-    override fun getItemCount(): Int {
-        return chapters.size
-    }
-
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val chapter = chapters[position]
+        val chapter = getItem(position)
         holder.bind(chapter)
     }
 }

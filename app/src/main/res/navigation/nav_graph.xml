@@ -9,7 +9,7 @@
         android:id="@+id/chapterListFragment"
         android:name="com.yash.gitaverse.ChapterListFragment"
         android:label="fragment_chapter_list"
-        tools:layout="@layout/fragment_chapter_list" >
+        tools:layout="@layout/fragment_chapter_list">
         <action
             android:id="@+id/action_chapterListFragment_to_chapterDetailFragment"
             app:destination="@id/chapterDetailFragment" />
@@ -18,7 +18,7 @@
         android:id="@+id/chapterDetailFragment"
         android:name="com.yash.gitaverse.ChapterDetailFragment"
         android:label="fragment_chapter_detail"
-        tools:layout="@layout/fragment_chapter_detail" >
+        tools:layout="@layout/fragment_chapter_detail">
         <argument
             android:name="chapterNumber"
             app:argType="integer" />
